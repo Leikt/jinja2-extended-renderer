@@ -1,0 +1,11 @@
+# Include instances modules
+{% for instance in instances -%}
+        {% with        filename='instances/' + get_tag(instance, 'Name') + '.tf',
+                        context={
+                                'instance': instance
+                        }
+        -%}
+include "{{ filename }}"
+{{ separate_file(filename, 'instance.j2', context) }}
+{%- endwith -%}
+{%- endfor -%}

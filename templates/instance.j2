@@ -1,0 +1,8 @@
+resource "aws_instance" "{{ instance.InstanceId }}" {
+    tags {
+        {%- for tag in instance.Tags %}
+        "{{ tag['Key'] }}" = "{{ tag['Value'] }}"
+        {%- endfor %}
+        {{value}}
+    }
+}

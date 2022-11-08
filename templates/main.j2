@@ -1,11 +1,10 @@
+{%- set root_directory = "results" -%}
+{%- infile "main.tf" -%}
 # Include instances modules
 {% for instance in instances -%}
-        {% with        filename='instances/' + get_tag(instance, 'Name') + '.tf',
-                        context={
-                                'instance': instance
-                        }
-        -%}
-include "{{ filename }}"
-{{ separate_file(filename, 'instance.j2', context) }}
-{%- endwith -%}
-{%- endfor -%}
+include "{{ aws_tag(instance, 'Name') }}" {
+    source = "./{{ 'instances/' + aws_tag(instance, 'Name') + '.tf' }}"
+}
+{%- include "instance.j2" %}
+{% endfor %}
+{%- endinfile -%}

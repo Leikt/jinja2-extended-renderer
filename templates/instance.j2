@@ -1,8 +1,10 @@
+{%- infile 'instances/' + aws_tag(instance, 'Name') + '.tf' -%}
 resource "aws_instance" "{{ instance.InstanceId }}" {
     tags {
         {%- for tag in instance.Tags %}
-        "{{ tag['Key'] }}" = "{{ tag['Value'] }}"
+        {{ ('"' + tag['Key'] + '"').ljust(15) }} = "{{ tag['Value'] }}"
         {%- endfor %}
         {{value}}
     }
 }
+{%- endinfile -%}
